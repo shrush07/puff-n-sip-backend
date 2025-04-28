@@ -4,6 +4,6 @@ services:
     runtime: node
     branch: master
     buildCommand: npm install
-    startCommand: node src/server.js
+    startCommand: npm start
     region: oregon
     plan: free
