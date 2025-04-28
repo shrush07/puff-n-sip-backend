@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "node ./server.ts",
-    "dev": "nodemon --inspect ./server.ts",
+    "start": "ts-node src/server.ts",
+    "dev": "nodemon --inspect src/server.ts",
     "build": "echo 'no build needed'",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
