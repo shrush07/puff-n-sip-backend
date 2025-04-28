@@ -9,7 +9,7 @@ import contactRouter from './routers/contact.router';
 import authMiddleware from './middlewares/auth.mid';
 import cartRouter from './routers/cart.router';
 import Stripe from 'stripe';
-import { environment } from '../../frontend/src/enviornments/environment';
+import { environment } from '../../frontend/src/environments/environment';
 import mongoose from 'mongoose';
 
 
