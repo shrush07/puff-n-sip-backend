@@ -24,6 +24,15 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
 });
 
 const app = express();
+const PORT = process.env.PORT || 5000;
+
+app.get('/', (req, res) => {
+  res.send('Server is running!');
+});
+
+app.listen(PORT, () => {
+  console.log(`Server started on port ${PORT}`);
+});
 
 // Middleware
 app.use(express.json());
@@ -53,6 +62,7 @@ app.use((req, res, next) => {
 app.post('/protected-route', authMiddleware, (req, res) => {
   res.json({ message: 'You are authenticated' });
 });
+
 
 // Database Connection
 dbConnect().catch((err) =>
