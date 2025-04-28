@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node src/server.js",
     "dev": "nodemon --inspect src/server.js",
-    "build": "npm install && npm run build",
+    "build": "echo 'no build needed'",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
