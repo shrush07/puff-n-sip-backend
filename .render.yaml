@@ -3,6 +3,7 @@ services:
     name: backend
     runtime: node
     branch: master
-    startCommand: npm start
+    buildCommand: "npm install"
+    startCommand: "npm start"
     region: oregon
     plan: free
