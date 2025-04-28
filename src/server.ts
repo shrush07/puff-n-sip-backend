@@ -9,7 +9,7 @@ import contactRouter from './routers/contact.router';
 import authMiddleware from './middlewares/auth.mid';
 import cartRouter from './routers/cart.router';
 import Stripe from 'stripe';
-import { environment } from './enviornments/environment';
+import { environment } from '../../frontend/src/enviornments/environment';
 import mongoose from 'mongoose';
 
 
@@ -18,8 +18,8 @@ console.log('MONGO_URI:', process.env.MONGO_URI);
 
 dotenv.config();
 
-// Initialize Stripe with your secret key
-const stripe = new Stripe(environment.stripeSecretKey, {
+// Initialize Stripe with your public key
+const stripe = new Stripe(environment.stripePublicKey, {
   apiVersion: '2024-12-18.acacia'
 });
 
