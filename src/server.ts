@@ -9,36 +9,29 @@ import contactRouter from './routers/contact.router';
 import authMiddleware from './middlewares/auth.mid';
 import cartRouter from './routers/cart.router';
 import Stripe from 'stripe';
-import { environment } from '../../frontend/src/environments/environment';
 import mongoose from 'mongoose';
 
-
-require('dotenv').config();
-console.log('MONGO_URI:', process.env.MONGO_URI);
-
+// Load environment variables
 dotenv.config();
+console.log('MONGO_URI:', process.env.MONGO_URI);
+console.log('STRIPE_SECRET_KEY:', process.env.STRIPE_SECRET_KEY); // Log the Stripe API key for debugging
 
 // Initialize Stripe with your SECRET key from environment variables
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
-  apiVersion: '2024-12-18.acacia'
+  apiVersion: '2024-12-18.acacia', // Update to a stable version if needed
 });
 
 const app = express();
-const PORT = process.env.PORT || 5000;
 
 app.get('/', (req, res) => {
   res.send('Server is running!');
-});
-
-app.listen(PORT, () => {
-  console.log(`Server started on port ${PORT}`);
 });
 
 // Middleware
 app.use(express.json());
 app.use(
   cors({
-    origin: [process.env.CORS_ORIGIN || 'http://localhost:4200', 'https://puff-n-sip.netlify.app/'], // Use environment variable for CORS origin
+    origin: [process.env.CORS_ORIGIN || 'http://localhost:4200', 'https://puff-n-sip.netlify.app/'],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Authorization', 'Content-Type'],
@@ -63,7 +56,6 @@ app.post('/protected-route', authMiddleware, (req, res) => {
   res.json({ message: 'You are authenticated' });
 });
 
-
 // Database Connection
 dbConnect().catch((err) =>
   console.error('Failed to connect to the database:', err.message)
@@ -86,19 +78,3 @@ const port = process.env.PORT || 5000;
 app.listen(port, () => {
   console.log(`Backend running at http://localhost:${port}`);
 });
-
-
-
-// async function connectToDatabase() {
-//   try {
-//     await mongoose.connect(process.env.MONGO_URI, {
-//       useNewUrlParser: true,
-//       useUnifiedTopology: true,
-//     });
-//     console.log('Connected to MongoDB');
-//   } catch (error) {
-//     console.error('MongoDB connection error:', error);
-//   }
-// }
-
-// connectToDatabase();

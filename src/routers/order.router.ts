@@ -6,8 +6,9 @@ import { OrderModel } from "../models/order.model";
 import auth from "../middlewares/auth.mid";
 import mongoose from "mongoose";
 import Stripe from "stripe"; 
-import { environment } from '../enviornments/environment';
 import authMid from "../middlewares/auth.mid";
+import { environment } from "../environments/environment.prod";
+
 
 console.log('Order router initialized');
 
