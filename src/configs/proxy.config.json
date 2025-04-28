@@ -1,0 +1,11 @@
+
+
+{
+  "/api": {
+    "target": "https://puff-n-sip.netlify.app/.netlify/functions",
+    "secure": true,
+    "changeOrigin": true,
+    "pathRewrite": { "^/api": "" }
+  }
+}
+
