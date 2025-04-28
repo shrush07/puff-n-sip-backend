@@ -1,7 +1,9 @@
 services:
   - type: web
     name: backend
-    buildCommand: npm install
+    buildCommand: |
+      npm install
+      npm run build  # Add the appropriate build command here
     startCommand: npm start
     runtime: node
     plan: free
