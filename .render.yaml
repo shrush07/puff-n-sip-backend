@@ -3,7 +3,7 @@ services:
     name: backend
     runtime: node
     branch: master
-    buildCommand: "npm install"
+    buildCommand: "npm install && npm run build"
     startCommand: "npm start"
     region: oregon
     plan: free
