@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: backend
+    buildCommand: npm install
+    startCommand: npm start
+    runtime: node
+    plan: free
