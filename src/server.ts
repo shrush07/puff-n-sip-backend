@@ -10,6 +10,7 @@ import authMiddleware from './middlewares/auth.mid';
 import cartRouter from './routers/cart.router';
 import Stripe from 'stripe';
 import mongoose from 'mongoose';
+import path from 'path';
 
 // Load environment variables
 dotenv.config();
@@ -44,6 +45,9 @@ app.use('/api/users', userRouter);
 app.use('/api/orders', orderRouter);
 app.use('/api/cart', cartRouter);
 app.use('/api/contact', contactRouter);
+
+// Serve static images from the public/images folder
+app.use('/images', express.static(path.join(__dirname, '../public/images')));
 
 // Log incoming requests
 app.use((req, res, next) => {
