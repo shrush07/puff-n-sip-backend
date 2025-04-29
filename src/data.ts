@@ -3,7 +3,7 @@ export const sample_foods: any[] = [
       _id: '1',
       name: 'Coffee',
       price: 120.0,
-      imageUrl: 'https://puff-sip.onrender.com/images/coffee1.png',
+      imageUrl: 'coffee1.png',
       tags: ['Coffee'],
       favorite: false,
     },
