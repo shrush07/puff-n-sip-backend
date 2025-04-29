@@ -32,7 +32,7 @@ app.get('/', (req, res) => {
 app.use(express.json());
 app.use(
   cors({
-    origin: [process.env.CORS_ORIGIN || 'http://localhost:4200', 'https://puff-n-sip.netlify.app/'],
+    origin: ['https://puff-n-sip.netlify.app/', 'http://localhost:4200'],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Authorization', 'Content-Type'],
