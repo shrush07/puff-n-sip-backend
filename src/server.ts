@@ -24,11 +24,16 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
 
 const app = express();
 
+// Get allowed origins from environment variables
+const allowedOrigins = process.env.NODE_ENV === 'production'
+  ? ['https://puff-n-sip.netlify.app']  
+  : ['http://localhost:4200']; 
+
 // Middleware
 app.use(express.json());
 app.use(
-  cors({
-    origin: ['http://localhost:4200', 'https://puff-n-sip.netlify.app/'],
+  cors({  
+    origin: allowedOrigins, // Allow only specific origins
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Authorization', 'Content-Type'],
