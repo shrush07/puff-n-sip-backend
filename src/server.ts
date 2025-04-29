@@ -43,6 +43,13 @@ app.use(
 // Static Image Serving
 const imagesPath = path.join(__dirname, 'public/images');
 console.log('Configured to serve images from:', imagesPath);
+app.use('/images', express.static(imagesPath, {
+  setHeaders: (res, path) => {
+    if (path.endsWith('.png')) {
+      res.set('Content-Type', 'image/png');
+    }
+  },
+}));
 
 // Confirm the folder exists
 if (!fs.existsSync(imagesPath)) {
@@ -51,7 +58,6 @@ if (!fs.existsSync(imagesPath)) {
   console.log('Static images folder exists.');
 }
 
-app.use('/images', express.static(imagesPath));
 
 // Log all incoming requests
 app.use((req, res, next) => {
