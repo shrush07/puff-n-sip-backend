@@ -12,6 +12,7 @@
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
+    "typeRoots": ["./node_modules/@types"],
     "types": ["node", "express"]
   },
   "include": ["src/**/*"],
