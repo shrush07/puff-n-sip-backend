@@ -8,7 +8,8 @@ import bcrypt from 'bcryptjs';
 import { generateTokenResponse } from '../utils/token.utils';
 import * as crypto from 'crypto';
 import * as nodemailer from 'nodemailer';
-
+import isAdminMiddleware from '../middlewares/isAdmin.mid';
+import authMiddleware from '../middlewares/auth.mid';
 
 const router = Router();
 // Seed route (for database seeding)
@@ -69,6 +70,12 @@ router.post('/register', asyncHandler(
     res.status(201).send(generateTokenResponse(dbUser)); 
   }
 ));  
+
+// Admin route
+router.get('/', authMiddleware, isAdminMiddleware, asyncHandler(async (req, res) => {
+  const users = await UserModel.find().select('-password -resetPasswordToken -resetPasswordExpires');
+  res.json(users);
+}));
 
 // Request password reset route
 router.post('/reset-password', asyncHandler(async (req: any, res: any) => {

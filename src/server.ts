@@ -10,97 +10,107 @@ import authMiddleware from './middlewares/auth.mid';
 import cartRouter from './routers/cart.router';
 import Stripe from 'stripe';
 import path from 'path';
-import fs from 'fs';
+import http from 'http';
+import { WebSocketServer, WebSocket } from 'ws';
+import { CorsOptionsDelegate } from 'cors';
 
-// Load environment variables
 dotenv.config();
-console.log('MONGO_URI:', process.env.MONGO_URI);
-console.log('STRIPE_SECRET_KEY:', process.env.STRIPE_SECRET_KEY);
+
+const app = express();
+const port = process.env.PORT || 5000;
+const httpServer = http.createServer(app);
 
 // Initialize Stripe
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
   apiVersion: '2024-12-18.acacia',
 });
 
-const app = express();
+// Determine allowed CORS origins
+const allowedOrigins = ['http://localhost:4200', 'https://puff-n-sip.netlify.app'];
 
-// Get allowed origins from environment variables
-const allowedOrigins = process.env.NODE_ENV === 'production'
-  ? ['https://puff-n-sip.netlify.app']  
-  : ['http://localhost:4200']; 
-
-// Middleware
-app.use(express.json());
-app.use(
-  cors({  
-    origin: allowedOrigins, // Allow only specific origins
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Authorization', 'Content-Type'],
-  })
-);
-
-// Static Image Serving
-const imagesPath = path.join(__dirname, 'public/images');
-console.log('Configured to serve images from:', imagesPath);
-app.use('/images', express.static(imagesPath, {
-  setHeaders: (res, path) => {
-    if (path.endsWith('.png')) {
-      res.set('Content-Type', 'image/png');
+const corsOptions: cors.CorsOptions = {
+  origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
     }
   },
-}));
-
-// Confirm the folder exists
-if (!fs.existsSync(imagesPath)) {
-  console.warn('WARNING: Images path does not exist:', imagesPath);
-} else {
-  console.log('Static images folder exists.');
-}
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Authorization', 'Content-Type'],
+};
 
 
-// Log all incoming requests
+// JSON parser
+app.use(express.json());
+
+// Static Images
+const imagesPath = path.join(__dirname, 'public/images');
+console.log('Serving images from:', imagesPath);
+app.use('/images', express.static(imagesPath));
+
+// Request Logger
 app.use((req, res, next) => {
-  console.log('Incoming request:', req.method, req.originalUrl);
+  console.log(`[${req.method}] ${req.originalUrl}`);
   next();
 });
 
-// Routes
+// WebSocket setup
+const wss = new WebSocketServer({ server: httpServer });
+wss.on('connection', (ws: WebSocket) => {
+  console.log('WebSocket client connected');
+
+  ws.on('message', (message: string | Buffer) => {
+    console.log('Received:', message.toString());
+    ws.send(`Echo: ${message}`);
+  });
+
+  ws.on('close', () => {
+    console.log('WebSocket client disconnected');
+  });
+});
+
+// API Routes
 app.use('/api/foods', foodRouter);
 app.use('/api/users', userRouter);
 app.use('/api/orders', orderRouter);
 app.use('/api/cart', cartRouter);
 app.use('/api/contact', contactRouter);
 
-// Root route
+// Health Check
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'OK', message: 'Server is healthy.' });
+});
+
+// Root
 app.get('/', (req, res) => {
   res.send('Server is running!');
 });
 
-// Protected test route
+// Protected Route
 app.post('/protected-route', authMiddleware, (req, res) => {
   res.json({ message: 'You are authenticated' });
 });
 
-// Connect to database
-dbConnect().catch((err) =>
-  console.error('Failed to connect to the database:', err.message)
-);
+// Connect to DB
+dbConnect().catch((err) => {
+  console.error('Database connection error:', err.message);
+});
 
-// Error handler
+// Error Handler
 app.use((err: any, req: any, res: any, next: any) => {
-  console.error('Error:', err.stack);
+  console.error('Unhandled Error:', err.stack);
   res.status(500).json({ message: 'Internal Server Error' });
 });
 
-// Catch unmatched routes
+// 404 Handler
 app.use((req, res) => {
-  console.warn(`Unmatched route: ${req.method} ${req.originalUrl}`);
+  console.warn(`404 Not Found: ${req.method} ${req.originalUrl}`);
   res.status(404).json({ message: `Route not found: ${req.originalUrl}` });
 });
 
-// Start server
-const port = process.env.PORT || 5000;
-app.listen(port, () => {
-  console.log(`Backend running at http://localhost:${port}`);
+// Start HTTP Server
+httpServer.listen(port, () => {
+  console.log(`Backend and WebSocket server running at http://localhost:${port}`);
 });
