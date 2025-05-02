@@ -19,7 +19,7 @@ const app = express();
 const port = process.env.PORT || 5000;
 const httpServer = http.createServer(app);
 
-// ✅ Allow both deployed frontend and local dev frontend
+// Allow both deployed frontend and local dev frontend
 const allowedOrigins = ['https://puff-n-sip.netlify.app', 'http://localhost:4200'];
 
 const corsOptions: cors.CorsOptions = {
@@ -35,7 +35,7 @@ const corsOptions: cors.CorsOptions = {
   allowedHeaders: ['Authorization', 'Content-Type'],
 };
 
-// ✅ Apply CORS middleware before routes
+// Apply CORS middleware before routes
 app.use(cors(corsOptions));
 
 // JSON parser
