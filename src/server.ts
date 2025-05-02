@@ -12,7 +12,6 @@ import Stripe from 'stripe';
 import path from 'path';
 import http from 'http';
 import { WebSocketServer, WebSocket } from 'ws';
-import { CorsOptionsDelegate } from 'cors';
 
 dotenv.config();
 
@@ -20,12 +19,7 @@ const app = express();
 const port = process.env.PORT || 5000;
 const httpServer = http.createServer(app);
 
-// Initialize Stripe
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
-  apiVersion: '2024-12-18.acacia',
-});
-
-// Determine allowed CORS origins
+// ✅ Allow both deployed frontend and local dev frontend
 const allowedOrigins = ['https://puff-n-sip.netlify.app', 'http://localhost:4200'];
 
 const corsOptions: cors.CorsOptions = {
@@ -40,8 +34,9 @@ const corsOptions: cors.CorsOptions = {
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Authorization', 'Content-Type'],
 };
-app.use(cors(corsOptions));
 
+// ✅ Apply CORS middleware before routes
+app.use(cors(corsOptions));
 
 // JSON parser
 app.use(express.json());
