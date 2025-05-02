@@ -26,7 +26,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
 });
 
 // Determine allowed CORS origins
-const allowedOrigins = [, 'https://puff-n-sip.netlify.app'];
+const allowedOrigins = ['https://puff-n-sip.netlify.app', 'http://localhost:4200'];
 
 const corsOptions: cors.CorsOptions = {
   origin: function (origin, callback) {
@@ -40,6 +40,7 @@ const corsOptions: cors.CorsOptions = {
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Authorization', 'Content-Type'],
 };
+app.use(cors(corsOptions));
 
 
 // JSON parser
