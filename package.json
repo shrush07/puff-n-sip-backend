@@ -25,9 +25,7 @@
     "nodemailer": "^6.9.16",
     "ntp": "^0.0.5",
     "stripe": "^17.5.0",
-    "ws": "^8.18.1"
-  },
-  "devDependencies": {
+    "ws": "^8.18.1",
     "@types/bcryptjs": "^2.4.6",
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
@@ -39,5 +37,7 @@
     "nodemon": "^3.1.9",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.2"
+  },
+  "devDependencies": {
   }
 }

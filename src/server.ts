@@ -26,14 +26,14 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
 });
 
 // Determine allowed CORS origins
-const allowedOrigins = ['http://localhost:4200', 'https://puff-n-sip.netlify.app'];
+const allowedOrigins = [, 'https://puff-n-sip.netlify.app'];
 
 const corsOptions: cors.CorsOptions = {
-  origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
+  origin: function (origin, callback) {
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
-      callback(new Error('Not allowed by CORS'));
+      callback(new Error('CORS not allowed from this origin: ' + origin));
     }
   },
   credentials: true,
