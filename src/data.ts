@@ -6,6 +6,7 @@ export const sample_foods: any[] = [
       imageUrl: 'coffee1.png',
       tags: ['Coffee'],
       favorite: false,
+      createdAt: '2024-08-01T10:00:00Z',
     },
     {
       _id: '2',
@@ -14,6 +15,7 @@ export const sample_foods: any[] = [
       imageUrl: 'https://puff-sip.onrender.com/images/juice1.png',
       tags: ['Mocktail'],
       favorite: false,
+      createdAt: '2024-06-01T10:00:00Z',
     },
     {
       _id: '3',
@@ -22,6 +24,7 @@ export const sample_foods: any[] = [
       imageUrl: 'https://puff-sip.onrender.com/images/puff1.png',
       tags: ['Puff'],
       favorite: false,
+      createdAt: '2024-06-07T10:00:00Z',
     },
     {
       _id: '4',
@@ -30,6 +33,7 @@ export const sample_foods: any[] = [
       imageUrl: 'https://puff-sip.onrender.com/images/croisaant1.png',
       tags: ['Croisaant'],
       favorite: true,
+      createdAt: '2024-05-01T10:00:00Z',
     },
     {
       _id: '5',
@@ -38,6 +42,7 @@ export const sample_foods: any[] = [
       imageUrl: 'https://puff-sip.onrender.com/images/coffee2.png',
       tags: ['Coffee'],
       favorite: true,
+      createdAt: '2024-05-01T10:00:00Z',
     },
     {
       _id: '6',
@@ -46,6 +51,7 @@ export const sample_foods: any[] = [
       imageUrl: 'https://puff-sip.onrender.com/images/burger1.png',
       tags: ['Burger'],
       favorite: true,
+      createdAt: '2024-05-01T10:00:00Z',
     },
     {
       _id: '7',
@@ -54,6 +60,7 @@ export const sample_foods: any[] = [
       imageUrl: 'https://puff-sip.onrender.com/images/juice2.png',
       tags: ['Mocktail'],
       favorite: true,
+      createdAt: '2024-05-01T10:00:00Z',
     },
     {
       _id: '8',
@@ -62,6 +69,7 @@ export const sample_foods: any[] = [
       imageUrl: 'https://puff-sip.onrender.com/images/coffee3.png',
       tags: ['Coffee'],
       favorite: true,
+      createdAt: '2024-05-01T10:00:00Z',
     },
     {
       _id: '9',
@@ -70,6 +78,7 @@ export const sample_foods: any[] = [
       imageUrl: 'https://puff-sip.onrender.com/images/croisaant2.png',
       tags: ['Croisaant'],
       favorite: true,
+      createdAt: '2024-05-01T10:00:00Z',
     },
     {
       _id: '10',
@@ -78,6 +87,7 @@ export const sample_foods: any[] = [
       imageUrl: 'https://puff-sip.onrender.com/images/puff2.png',
       tags: ['Puff'],
       favorite: true,
+      createdAt: '2024-05-01T10:00:00Z',
     },
     {
       _id: '11',
@@ -86,6 +96,7 @@ export const sample_foods: any[] = [
       imageUrl: 'https://puff-sip.onrender.com/images/coffee4.png',
       tags: ['Coffee'],
       favorite: true,
+      createdAt: '2024-05-01T10:00:00Z',
     },
   ];
   
