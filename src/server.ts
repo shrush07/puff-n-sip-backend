@@ -13,6 +13,7 @@ import path from 'path';
 import http from 'http';
 import { WebSocketServer, WebSocket } from 'ws';
 import listEndpoints from 'express-list-endpoints';
+import { ErrorRequestHandler } from 'express';
 
 dotenv.config();
 
@@ -118,6 +119,12 @@ httpServer.listen(port, () => {
   });
 });
 
+const errorHandler: ErrorRequestHandler = (e, req, res, next) => {
+  console.error(e.stack);
+  res.status(500).json({ message: e.message });
+};
+
+app.use(errorHandler);
 
 // Find favorite is registered or not
 app._router.stack.forEach((r: any) => {
