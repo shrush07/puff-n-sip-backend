@@ -83,20 +83,27 @@ router.get(
   })
 );
 
-// PATCH endpoint to toggle the favorite status
-router.patch('/:id/favorite/:foodId', (req, res) => {
-  // const { foodId } = req.params.id;
-  const { favorite } = req.body; // Expect `favorite` in the request body
-
-  // if ( !foodId) {
-  //   return res.status(400).send('Invalid request parameters.');
-  // }
-
-  // console.log(`Updating favorite status for user food ${foodId}`);
+router.patch('/:id/favorite', asyncHandler(async (req:any, res:any) => {
   
-  // Example response
-  res.status(200).send('Favorite status updated successfully.');
-});
+  console.log('PATCH /api/foods/:id/favorite hit');
+  const foodId = req.params.id;
+  const { favorite } = req.body;
+
+  const updatedFood = await FoodModel.findByIdAndUpdate(
+    foodId,
+    { favorite },
+    { new: true }
+  );
+
+  if (!updatedFood) {
+    return res.status(404).send('Food not found');
+  }
+
+
+  res.send(updatedFood);
+}));
+
+
 
 
 export default router;

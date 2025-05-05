@@ -12,6 +12,7 @@ import Stripe from 'stripe';
 import path from 'path';
 import http from 'http';
 import { WebSocketServer, WebSocket } from 'ws';
+import listEndpoints from 'express-list-endpoints';
 
 dotenv.config();
 
@@ -109,4 +110,18 @@ app.use((req, res) => {
 // Start HTTP Server
 httpServer.listen(port, () => {
   console.log(`Backend and WebSocket server running at http://localhost:${port}`);
+
+  const endpoints = listEndpoints(app);
+  console.log('Registered Endpoints:');
+  endpoints.forEach((e) => {
+    console.log(`${e.methods.join(', ')} ${e.path}`);
+  });
+});
+
+
+// Find favorite is registered or not
+app._router.stack.forEach((r: any) => {
+  if (r.route && r.route.path) {
+    console.log(r.route.path);
+  }
 });
