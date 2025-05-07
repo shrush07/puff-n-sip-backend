@@ -1,7 +1,6 @@
 import express from 'express';
 import cors from 'cors';
 import * as dotenv from 'dotenv';
-import { dbConnect } from './configs/database.config';
 import foodRouter from './routers/food.router';
 import userRouter from './routers/user.router';
 import orderRouter from './routers/order.router';
@@ -14,6 +13,7 @@ import http from 'http';
 import { WebSocketServer, WebSocket } from 'ws';
 import listEndpoints from 'express-list-endpoints';
 import { ErrorRequestHandler } from 'express';
+import { sequelize } from './configs/db';
 
 dotenv.config();
 
@@ -36,6 +36,12 @@ const corsOptions: cors.CorsOptions = {
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Authorization', 'Content-Type'],
 };
+
+// Sync models to MySQL
+sequelize.sync({ alter: true }) // or { force: true } to drop & recreate
+  .then(() => console.log("Database synced"))
+  .catch(err => console.error("Sync error", err));
+
 
 // Apply CORS middleware before routes
 app.use(cors(corsOptions));
@@ -89,11 +95,6 @@ app.get('/', (req, res) => {
 // Protected Route
 app.post('/protected-route', authMiddleware, (req, res) => {
   res.json({ message: 'You are authenticated' });
-});
-
-// Connect to DB
-dbConnect().catch((err) => {
-  console.error('Database connection error:', err.message);
 });
 
 // Error Handler

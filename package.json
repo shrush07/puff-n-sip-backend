@@ -41,5 +41,8 @@
     "ts-node": "^10.9.2",
     "typescript": "^5.8.2",
     "ws": "^8.18.1"
+  },
+  "devDependencies": {
+    "@types/sequelize": "^4.28.20"
   }
 }

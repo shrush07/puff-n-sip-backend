@@ -1,67 +1,65 @@
-import { model, Schema, Types } from "mongoose";
-import { OrderStatus } from "../constants/order_status";
+import { Model, DataTypes } from 'sequelize';
+import { sequelize } from '../configs/db';
+import { UserModel } from './user.model';
 
-export interface OrderItem {
-  food: {
-    _id: string;
-    name: string;
-    price: number;
-    imageUrl: string;
-  };
-  price: number;
-  quantity: number;
-}
-
-export const OrderItemSchema = new Schema<OrderItem>({
-  food: {
-    _id: { type: String, required: true },
-    name: { type: String, required: true },
-    price: { type: Number, required: true },
-    imageUrl: { type: String, required: true }
-  },
-  price: { type: Number, required: true },
-  quantity: { type: Number, required: true },
-});
-
-export interface Order {
-  items: OrderItem[];
-  totalPrice: number;
-  name?: string; // Optional for in-store
-  address?: string; // Optional for in-store
-  imageUrl: string;
+interface OrderAttributes {
+  id?: number;
+  name: string;
+  address: string;
+  imageUrl?: string;
   paymentId?: string;
   paymentMethod?: string;
-  orderType: "online" | "instore";
-  status: OrderStatus;
-  user?: Types.ObjectId; // Optional for walk-ins
-  createdAt: Date;
-  updatedAt: Date;
-  clientSecret: string;
+  totalPrice: number;
+  status?: string;
+  orderType: 'online' | 'instore';
+  clientSecret?: string;
+  userId: number;
+  items: object; // ✅ Add this
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
-const orderSchema = new Schema<Order>(
-  {
-    user: { type: Schema.Types.ObjectId, ref: "User", required: false },
-    name: { type: String },
-    address: { type: String },
-    imageUrl: { type: String, required: true },
-    paymentId: { type: String },
-    paymentMethod: { type: String },
-    totalPrice: { type: Number, required: true },
-    items: [OrderItemSchema],
-    status: { type: String, default: OrderStatus.NEW },
-    orderType: {
-      type: String,
-      enum: ["online", "instore"],
-      required: true
-    },
-    clientSecret: { type: String, required: false }
-  },
-  {
-    timestamps: true,
-    toJSON: { virtuals: true },
-    toObject: { virtuals: true }
-  }
-);
+export class OrderModel extends Model<OrderAttributes> implements OrderAttributes {
+  public id!: number;
+  public name!: string;
+  public address!: string;
+  public imageUrl?: string;
+  public paymentId?: string;
+  public paymentMethod?: string;
+  public totalPrice!: number;
+  public status!: string;
+  public orderType!: 'online' | 'instore';
+  public clientSecret?: string;
+  public userId!: number;
+  public items!: object;
+  public readonly createdAt!: Date;
+  public readonly updatedAt!: Date;
+}
 
-export const OrderModel = model("order", orderSchema);
+OrderModel.init({
+  id: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    primaryKey: true
+  },
+  name: { type: DataTypes.STRING, allowNull: false },
+  address: { type: DataTypes.STRING, allowNull: false },
+  imageUrl: { type: DataTypes.STRING },
+  paymentId: { type: DataTypes.STRING },
+  paymentMethod: { type: DataTypes.STRING },
+  totalPrice: { type: DataTypes.FLOAT, allowNull: false },
+  status: { type: DataTypes.STRING, defaultValue: 'NEW' },
+  orderType: {
+    type: DataTypes.ENUM('online', 'instore'),
+    allowNull: false
+  },
+  clientSecret: { type: DataTypes.STRING },
+  userId: { type: DataTypes.INTEGER, allowNull: false },
+  items: { type: DataTypes.JSON, allowNull: false }, 
+}, {
+  sequelize,
+  modelName: 'Order',
+  timestamps: true,
+});
+
+OrderModel.belongsTo(UserModel, { foreignKey: 'userId', as: 'user' });

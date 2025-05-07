@@ -1,25 +1,32 @@
-import mongoose from 'mongoose';
+import { Model, DataTypes } from 'sequelize';
+import { sequelize } from '../configs/db';
 
-const Schema = mongoose.Schema;
+interface CartAttributes {
+  id?: number;
+  userId: number;
+  items: any[];  // Define this type based on the structure of your items
+  createdAt?: Date;
+  updatedAt?: Date;
+}
 
-const CartItemSchema = new Schema({
-    food: {
-        _id: { type: mongoose.Schema.Types.ObjectId, ref: 'Food' },
-        name: { type: String, required: true },
-        price: { type: Number, required: true }
-    },
-    quantity: { type: Number, required: true, default: 1 },
-    price: { type: Number, required: true }
+export class CartModel extends Model<CartAttributes> implements CartAttributes {
+  public id!: number;
+  public userId!: number;
+  public items!: any[];  // Define this type more specifically if possible
+  public readonly createdAt!: Date;
+  public readonly updatedAt!: Date;
+}
+
+CartModel.init({
+  id: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    primaryKey: true
+  },
+  userId: { type: DataTypes.INTEGER, allowNull: false },
+  items: { type: DataTypes.JSON, allowNull: false },  // Changed to MySQL-compatible JSON
+}, {
+  sequelize,
+  modelName: 'Cart',
+  timestamps: true,
 });
-
-const CartSchema = new Schema({
-    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-    items: [CartItemSchema],
-    totalPrice: { type: Number, default: 0 },
-    totalCount: { type: Number, default: 0 },
-    updatedAt: { type: Date, default: Date.now }
-});
-
-const CartModel = mongoose.model('Cart', CartSchema);
-
-export { CartModel, CartSchema };

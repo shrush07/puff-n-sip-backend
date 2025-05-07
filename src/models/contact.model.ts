@@ -1,12 +1,10 @@
-const { Schema, model } = require("mongoose");
+import { DataTypes } from 'sequelize';
+import { sequelize } from '../configs/db';
 
-const contactSchema = new Schema({
-    username: { type: String, required: true },
-    email: { type: String, required: true },
-    ratings: { type: Number, required: true },
-    contact: { type: Number, required: true },
-    message: { type: String, required: true }
+export const Contact = sequelize.define('Contact', {
+  username: { type: DataTypes.STRING, allowNull: true },
+  email: { type: DataTypes.STRING, allowNull: false },
+  contact: { type: DataTypes.STRING, allowNull: false },
+  ratings: { type: DataTypes.FLOAT, allowNull: false },
+  message: { type: DataTypes.TEXT, allowNull: false },
 });
-
-// const Contact = new model("Contact", contactSchema);
-// module.exports = Contact;

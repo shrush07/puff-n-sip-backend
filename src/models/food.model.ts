@@ -1,31 +1,41 @@
-import {Schema, model} from 'mongoose';
+import { DataTypes, Model, Optional } from 'sequelize';
+import { sequelize } from '../configs/db';
 
-export interface Food{
-    id:string;
-    name:string;
-    price:number;
-    tags: string[];
-    favorite:boolean;
-    imageUrl: string;
+interface FoodAttributes {
+  id: number;
+  name: string;
+  price: number;
+  imageUrl?: string;
+  tags?: string[]; 
+  favorite?: boolean;
+  createdAt?: Date;
 }
 
-export const FoodSchema = new Schema<Food>(
-    {
-        id: {type: String, required:true},
-        name: {type: String, required:true},
-        price: {type: Number, required:true},
-        tags: {type: [String]},
-        favorite: {type: Boolean, default:false},
-        imageUrl: {type: String, required:true},
-    },{
-        toJSON:{
-            virtuals: true
-        },
-        toObject:{
-            virtuals: true
-        },
-        timestamps:true
-    }
-);
+interface FoodCreationAttributes extends Optional<FoodAttributes, 'id' | 'favorite' | 'createdAt'> {}
 
-export const FoodModel = model<Food>('food', FoodSchema);
+export class FoodModel extends Model<FoodAttributes, FoodCreationAttributes> implements FoodAttributes {
+  public id!: number;
+  public name!: string;
+  public price!: number;
+  public imageUrl?: string;
+  public tags?: string[];
+  public favorite?: boolean;
+  public createdAt?: Date;
+}
+
+FoodModel.init(
+  {
+    id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
+    name: { type: DataTypes.STRING, allowNull: false },
+    price: { type: DataTypes.FLOAT, allowNull: false },
+    imageUrl: { type: DataTypes.STRING },
+    tags: { type: DataTypes.JSON },
+    favorite: { type: DataTypes.BOOLEAN, defaultValue: false },
+  },
+  {
+    sequelize,
+    tableName: 'foods',
+    modelName: 'Food',
+    timestamps: true,
+  }
+);

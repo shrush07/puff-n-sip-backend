@@ -1,36 +1,52 @@
-import {Schema, model} from 'mongoose';
+import { Model, DataTypes, Optional } from 'sequelize';
+import { sequelize } from '../configs/db';
 
-export interface User{
-    token: string;
-    id:string;
-    email:string;
-    password: string;
-    name:string;
-    address:string;
-    // token:string;
-    isAdmin:boolean;
-    //token?: string;
-    refreshToken?: string;
-    resetPasswordToken?: string;
-    resetPasswordExpires?: Date;
+interface UserAttributes {
+  id: number;
+  name: string;
+  email: string;
+  password: string;
+  address: string;
+  isAdmin: boolean;
+  resetPasswordToken?: string | null;
+  resetPasswordExpires?: Date | null;
 }
 
-export const UserSchema = new Schema<User>({
-    name: {type: String, required: true},
-    email: {type: String, required: true, unique: true},
-    password: {type: String, required: true},
-    address: {type: String, required: true},
-    isAdmin: {type: Boolean, required: true},
-    resetPasswordToken: {type: String},
-    resetPasswordExpires: {type: Date}
-}, {
-    timestamps: true,
-    toJSON:{
-        virtuals: true
-    },
-    toObject:{
-        virtuals: true
-    }
-});
+interface UserCreationAttributes extends Optional<UserAttributes, 'id' | 'name' | 'address' | 'isAdmin' | 'resetPasswordToken' | 'resetPasswordExpires'> {}
 
-export const UserModel = model<User>('user', UserSchema);
+export class UserModel extends Model<UserAttributes, UserCreationAttributes> implements UserAttributes {
+  public id!: number;
+  public name!: string;
+  public email!: string;
+  public password!: string;
+  public address!: string;
+  public isAdmin!: boolean;
+  public resetPasswordToken!: string | null;
+  public resetPasswordExpires!: Date | null;
+}
+
+UserModel.init({
+  id: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    primaryKey: true
+  },
+  name: DataTypes.STRING,
+  email: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true
+  },
+  password: DataTypes.STRING,
+  address: DataTypes.STRING,
+  isAdmin: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false
+  },
+  resetPasswordToken: DataTypes.STRING,
+  resetPasswordExpires: DataTypes.DATE
+}, {
+  sequelize,
+  modelName: 'User',
+  timestamps: true,
+});

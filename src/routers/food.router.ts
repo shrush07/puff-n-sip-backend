@@ -1,109 +1,95 @@
-import { Router } from 'express';
-import { sample_foods, sample_tags } from '../data';
+import { Router, Request, Response } from 'express';
 import asyncHandler from 'express-async-handler';
 import { FoodModel } from '../models/food.model';
+import { Op } from 'sequelize';
+import { sample_foods } from '../data';
+
 const router = Router();
 
-router.get(
-  '/seed',
-  asyncHandler(async (req, res) => {
-    const foodsCount = await FoodModel.countDocuments();
-    if (foodsCount > 0) {
-      res.send('Seed is already done!');
-      return;
-    }
+// SEED ROUTE
+router.get('/seed', asyncHandler(async (req: Request, res: Response): Promise<void> => {
+  const foodsCount = await FoodModel.count();
+  if (foodsCount > 0) {
+    res.send('Seed is already done!');
+    return;
+  }
 
-    await FoodModel.create(sample_foods);
-    res.send('Seed Is Done!');
-  })
-);
+  await FoodModel.bulkCreate(sample_foods);
+  res.send('Seed Is Done!');
+}));
 
-router.get(
-  '/',
-  asyncHandler(async (req, res) => {
-    const food = await FoodModel.find();
-    res.send(food);
-  })
-);
+// GET ALL FOODS
+router.get('/', asyncHandler(async (req: Request, res: Response) => {
+  const foods = await FoodModel.findAll();
+  res.send(foods);
+}));
 
-router.get(
-  '/search/:searchTerm',
-  asyncHandler(async (req, res) => {
-    const searchRegex = new RegExp(req.params.searchTerm, 'i');
-    const food = await FoodModel.find({ name: { $regex: searchRegex } });
-    res.send(food);
-  })
-);
-
-router.get(
-  '/tags',
-  asyncHandler(async (req, res) => {
-    const tags = await FoodModel.aggregate([
-      {
-        $unwind: '$tags',
+// SEARCH FOODS
+router.get('/search/:searchTerm', asyncHandler(async (req: Request, res: Response) => {
+  const searchTerm = req.params.searchTerm;
+  const foods = await FoodModel.findAll({
+    where: {
+      name: {
+        [Op.substring]: searchTerm,
       },
-      {
-        $group: {
-          _id: '$tags',
-          count: { $sum: 1 },
-        },
-      },
-      {
-        $project: {
-          _id: 0,
-          name: '$_id',
-          count: '$count',
-        },
-      },
-    ]).sort({ count: -1 });
+    },
+  });
+  res.send(foods);
+}));
 
-    const all = {
-      name: 'All',
-      count: await FoodModel.countDocuments(),
-    };
+// GET FOODS BY TAG (Manual filter for JSON array)
+router.get('/tag/:tagName', asyncHandler(async (req: Request, res: Response) => {
+  const tagName = req.params.tagName;
+  const foods = await FoodModel.findAll();
+  const filtered = foods.filter(food => (food.tags || []).includes(tagName));
+  res.send(filtered);
+}));
 
-    tags.unshift(all);
-    res.send(tags);
-  })
-);
+// GET TAGS SUMMARY
+router.get('/tags', asyncHandler(async (req: Request, res: Response) => {
+  const foods = await FoodModel.findAll();
+  const tagMap: Record<string, number> = {};
 
-router.get(
-  '/tag/:tagName',
-  asyncHandler(async (req, res) => {
-    const foods = await FoodModel.find({ tags: req.params.tagName });
-    res.send(foods);
-  })
-);
+  for (const food of foods) {
+    const tags = food.tags || [];
+    tags.forEach((tag: string) => {
+      tagMap[tag] = (tagMap[tag] || 0) + 1;
+    });
+  }
 
-router.get(
-  '/:foodId',
-  asyncHandler(async (req, res) => {
-    const food = await FoodModel.findById(req.params.foodId);
-    res.send(food);
-  })
-);
+  const tagsArray = Object.entries(tagMap).map(([name, count]) => ({
+    name,
+    count,
+  }));
 
-router.patch('/:id/favorite', asyncHandler(async (req:any, res:any) => {
-  
-  console.log('PATCH /api/foods/:id/favorite hit');
+  const all = {
+    name: 'All',
+    count: await FoodModel.count(),
+  };
+
+  res.send([all, ...tagsArray.sort((a, b) => b.count - a.count)]);
+}));
+
+// GET FOOD BY ID
+router.get('/:foodId', asyncHandler(async (req: Request, res: Response) => {
+  const food = await FoodModel.findByPk(req.params.foodId);
+  res.send(food);
+}));
+
+// TOGGLE FAVORITE
+router.patch('/:id/favorite', asyncHandler(async (req: Request, res: Response): Promise<void> => {
   const foodId = req.params.id;
   const { favorite } = req.body;
 
-  const updatedFood = await FoodModel.findByIdAndUpdate(
-    foodId,
-    { favorite },
-    { new: true }
-  );
+  await FoodModel.update({ favorite }, { where: { id: foodId } });
+  const updatedFood = await FoodModel.findByPk(foodId);
 
   if (!updatedFood) {
-    return res.status(404).send('Food not found');
+    res.send('Food not found');
+    return;
   }
-
 
   res.send(updatedFood);
 }));
-
-
-
 
 export default router;

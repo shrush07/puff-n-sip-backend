@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
-import { User } from '../models/user.model';
+import { UserModel } from '../models/user.model';
 
-export const generateTokenResponse = (user: User) => {
+export const generateTokenResponse = (user: UserModel) => {
   const secretKey = process.env.JWT_SECRET || "puff_n_sip";
   const accessToken = jwt.sign(
     { id: user.id, email: user.email, isAdmin: user.isAdmin },
