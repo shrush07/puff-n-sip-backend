@@ -9,7 +9,7 @@ const isAdminMiddleware = async (req: any, res: Response, next: NextFunction) =>
       return res.status(401).json({ message: 'Unauthorized: Missing user ID' });
     }
 
-    const user = await UserModel.findById(userId);
+    const user = await UserModel.findByPk(userId);
 
     if (!user || !user.isAdmin) {
       return res.status(403).json({ message: 'Forbidden: Admins only' });
