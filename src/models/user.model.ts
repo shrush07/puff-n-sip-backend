@@ -1,5 +1,5 @@
 import { Model, DataTypes, Optional } from 'sequelize';
-import { sequelize } from '../configs/db';
+import sequelize from '../configs/db.config';
 
 interface UserAttributes {
   id: number;

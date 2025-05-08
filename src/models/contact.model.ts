@@ -1,5 +1,5 @@
 import { DataTypes } from 'sequelize';
-import { sequelize } from '../configs/db';
+import sequelize from '../configs/db.config';
 
 export const Contact = sequelize.define('Contact', {
   username: { type: DataTypes.STRING, allowNull: true },

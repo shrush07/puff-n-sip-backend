@@ -1,5 +1,5 @@
 import { DataTypes, Model, Optional } from 'sequelize';
-import { sequelize } from '../configs/db';
+import sequelize from '../configs/db.config';
 
 interface FoodAttributes {
   id: number;

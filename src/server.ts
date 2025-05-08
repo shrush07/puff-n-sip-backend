@@ -13,7 +13,7 @@ import http from 'http';
 import { WebSocketServer, WebSocket } from 'ws';
 import listEndpoints from 'express-list-endpoints';
 import { ErrorRequestHandler } from 'express';
-import { sequelize } from './configs/db';
+import sequelize from './configs/db.config';
 
 dotenv.config();
 
