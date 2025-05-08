@@ -7,16 +7,26 @@ import { sample_foods } from '../data';
 const router = Router();
 
 // SEED ROUTE
-router.get('/seed', asyncHandler(async (req: Request, res: Response): Promise<void> => {
-  const foodsCount = await FoodModel.count();
-  if (foodsCount > 0) {
-    res.send('Seed is already done!');
-    return;
-  }
+router.get('/seed', async (req: Request, res: Response): Promise<void> => {
+  try {
+    const foodsCount = await FoodModel.count();
+    if (foodsCount > 0) {
+      res.send('Seed is already done!');
+      return;
+    }
 
-  await FoodModel.bulkCreate(sample_foods);
-  res.send('Seed Is Done!');
-}));
+    await FoodModel.bulkCreate(sample_foods);
+    res.send('Seed Is Done!');
+  } catch (error: any) {
+    console.error('Error in /seed route:', error); // log full error
+    res.status(500).json({
+      message: 'Internal Server Error',
+      error: error.message,
+      stack: error.stack,
+    });
+  }
+}
+);
 
 // GET ALL FOODS
 router.get('/', asyncHandler(async (req: Request, res: Response) => {

@@ -38,10 +38,13 @@ const corsOptions: cors.CorsOptions = {
 };
 
 // Sync models to MySQL
-sequelize.sync({ alter: true }) // or { force: true } to drop & recreate
-  .then(() => console.log("Database synced"))
-  .catch(err => console.error("Sync error", err));
-
+sequelize.sync({ alter: true }) 
+  .then(() => {
+    console.log('Database synced');
+  })
+  .catch((err) => {
+    console.error('Failed to sync DB:', err);
+  });
 
 // Apply CORS middleware before routes
 app.use(cors(corsOptions));
