@@ -37,6 +37,7 @@ const corsOptions: cors.CorsOptions = {
   allowedHeaders: ['Authorization', 'Content-Type'],
 };
 
+
 // Sync models to MySQL
 sequelize.sync({ alter: true }) 
   .then(() => {
@@ -51,6 +52,13 @@ app.use(cors(corsOptions));
 
 // JSON parser
 app.use(express.json());
+
+// Images
+app.use('/images', (req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  next();
+});
+
 
 // Static Images
 const imagesPath = path.join(__dirname, 'public/images');
