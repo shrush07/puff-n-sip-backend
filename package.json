@@ -6,17 +6,19 @@
     "start": "node dist/server.js",
     "dev": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/server.ts",
     "build": "tsc",
-    "postbuild": "cp -R src/public dist/public",
+    "postbuild": "cp -R src/public dist/public && cp .env dist/.env",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
     "@stripe/stripe-js": "^5.4.0",
     "@types/bcryptjs": "^2.4.6",
+    "@types/cors": "^2.8.18",
     "@types/express": "^4.17.21",
     "@types/jsonwebtoken": "^9.0.7",
     "@types/jwt-decode": "^2.2.1",
     "@types/node": "^22.13.10",
     "@types/nodemailer": "^6.4.17",
+    "@types/ws": "^8.18.1",
     "bcryptjs": "^2.4.3",
     "caniuse-lite": "^1.0.30001703",
     "cors": "^2.8.5",
@@ -39,9 +41,5 @@
     "ts-node": "^10.9.2",
     "typescript": "^5.8.2",
     "ws": "^8.18.1"
-  },
-  "devDependencies": {
-    "@types/cors": "^2.8.18",
-    "@types/ws": "^8.18.1"
   }
 }
