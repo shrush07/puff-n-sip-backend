@@ -8,16 +8,16 @@ export const generateTokenResponse = (user: User) => {
     secretKey,
     { expiresIn: '1d' } // Set expiration for access token
   );
-
- const generateToken = (id: string) => {
-    return jwt.sign({ id }, process.env.JWT_SECRET || "puff_n_sip", { expiresIn: '1d' });
-  };
  
   const refreshToken = jwt.sign(
     { id: user.id },
     secretKey,
     { expiresIn: '7d' } // Set expiration for refresh token
   );
+  if (!process.env.JWT_SECRET && process.env.NODE_ENV === 'production') {
+  throw new Error('JWT_SECRET is not set in production environment');
+}
+
 
   return {
     id: user.id,

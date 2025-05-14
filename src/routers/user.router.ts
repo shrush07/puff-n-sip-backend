@@ -34,7 +34,9 @@ router.get("/seed", asyncHandler(
 
     if (user && (await bcrypt.compare(password, user.password))) {
       const tokenResponse = generateTokenResponse(user); 
-      console.log('Generated Token:', tokenResponse.token);
+        if (process.env.NODE_ENV !== 'production') {
+          console.log('Generated Token');
+        }
       return res.json(tokenResponse); // Send token response as JSON
     } else {
       return res.status(HTTP_BAD_REQUEST).send("Username or password is invalid!");

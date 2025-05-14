@@ -12,7 +12,6 @@ import path from 'path';
 import http from 'http';
 import listEndpoints from 'express-list-endpoints';
 import { WebSocketServer, WebSocket } from 'ws';
-import router from './routers/user.router';
 
 dotenv.config();
 
@@ -43,6 +42,7 @@ const corsOptions: CorsOptions = {
 
 app.use(cors(corsOptions));
 app.use(express.json());
+console.log('CORS enabled for https://puff-n-sip.netlify.app');
 
 // Serve images
 const imagesPath = path.join(__dirname, 'public/images');
@@ -72,7 +72,6 @@ wss.on('connection', (ws: WebSocket) => {
 
 console.log("Deployed server.ts is running!");
 
-
 // API routes
 app.use('/api/foods', foodRouter);
 app.use('/api/users', userRouter);
@@ -85,15 +84,16 @@ app.get('/health', (req: Request, res: Response) => {
   res.status(200).json({ status: 'OK', message: 'Server is healthy.' });
 });
 
-router.get('/ping', (req:any, res:any) => {
-  res.send('pong');
-});
-
-
 // Root
 app.get('/', (req: Request, res: Response) => {
   res.send('Server is running!');
 });
+
+app.use((req:any, res:any, next:any) => {
+  console.log(`Incoming request: ${req.method} ${req.originalUrl}`);
+  next();
+});
+
 
 // Protected Route
 app.post('/protected-route', authMiddleware, (req: Request, res: Response) => {
@@ -107,6 +107,12 @@ const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
 };
 
 app.use(errorHandler);
+
+if (!process.env.JWT_SECRET) {
+  console.error('FATAL ERROR: JWT_SECRET is not defined');
+  process.exit(1);
+}
+
 
 // 404 Handler
 app.use((req: Request, res: Response) => {
