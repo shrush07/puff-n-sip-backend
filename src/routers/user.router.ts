@@ -1,4 +1,4 @@
-import {Router} from 'express';
+import { Router } from 'express';
 import { sample_users } from '../data';
 import jwt from 'jsonwebtoken';
 import asyncHandler from 'express-async-handler';
@@ -12,37 +12,47 @@ import isAdminMiddleware from '../middlewares/isAdmin.mid';
 import authMiddleware from '../middlewares/auth.mid';
 
 const router = Router();
+
 // Seed route (for database seeding)
 router.get("/seed", asyncHandler(
   async (req, res) => {
-     const usersCount = await UserModel.countDocuments();
-     if(usersCount> 0){
-       res.send("Seed is already done!");
-       return;
-     }
- 
-     await UserModel.create(sample_users);
-     res.send("Seed Is Done!");
- }
- ))
+    const usersCount = await UserModel.countDocuments();
+    if (usersCount > 0) {
+      res.send("Seed is already done!");
+      return;
+    }
+
+    await UserModel.create(sample_users);
+    res.send("Seed Is Done!");
+  }
+))
 
 // Login route
- router.post("/login", asyncHandler(
-  async (req: any, res: any) => {
-    const { email, password } = req.body;
-    const user = await UserModel.findOne({ email });
+router.post('/login', asyncHandler(async (req: any, res: any) => {
+  const { email, password } = req.body;
 
-    if (user && (await bcrypt.compare(password, user.password))) {
-      const tokenResponse = generateTokenResponse(user); 
-        if (process.env.NODE_ENV !== 'production') {
-          console.log('Generated Token');
-        }
-      return res.json(tokenResponse); // Send token response as JSON
-    } else {
+  const user = await UserModel.findOne({ email });
+
+  if (!user) {
+    return res.status(400).send({ message: 'User not found' });
+  }
+
+  const isPasswordMatch = await bcrypt.compare(password, user.password);
+    if (!isPasswordMatch) {
       return res.status(HTTP_BAD_REQUEST).send("Username or password is invalid!");
     }
-  }
-));
+
+
+
+  res.send({
+    id: user._id,
+    email: user.email,
+    name: user.name,
+    address: user.address,
+    isAdmin: user.isAdmin,
+    token: generateTokenResponse(user), 
+  });
+}));
 
 // Register route
 router.post('/register', asyncHandler(
@@ -67,11 +77,11 @@ router.post('/register', asyncHandler(
     };
 
     const dbUser = await UserModel.create(newUser);
-    
+
     // Generate tokens for the newly registered user
-    res.status(201).send(generateTokenResponse(dbUser)); 
+    res.status(201).send(generateTokenResponse(dbUser));
   }
-));  
+));
 
 // Admin route
 router.get('/', authMiddleware, isAdminMiddleware, asyncHandler(async (req, res) => {
@@ -115,7 +125,7 @@ router.post('/reset-password', asyncHandler(async (req: any, res: any) => {
   console.log('Sending email to:', user.email);
 
   const resetUrl = `http://localhost:4200/reset-password/${resetToken}`;
-  
+
   const mailOptions = {
     from: process.env.EMAIL_ADDRESS,
     to: user.email, // Send to the user's email
@@ -138,14 +148,15 @@ router.post('/reset-password', asyncHandler(async (req: any, res: any) => {
     } else {
       // Handle unexpected error types
       res.status(500).json({ message: 'An unexpected error occurred' });
-    }  }
-  
+    }
+  }
+
 }));
 
 // Actual password reset route
 router.post('/reset-password/:token', asyncHandler(async (req: any, res: any) => {
   console.log('Reset password - backend called');
-  
+
   const { newPassword } = req.body;
   const { token } = req.params;
 
@@ -165,7 +176,7 @@ router.post('/reset-password/:token', asyncHandler(async (req: any, res: any) =>
     if (isSamePassword) {
       return res.status(400).json({ message: 'New password must be different from the current password' });
     }
-    
+
     // Update user's password
     user.password = await bcrypt.hash(newPassword, 10);
     user.resetPasswordToken = undefined; // Clear the token after use
@@ -173,7 +184,7 @@ router.post('/reset-password/:token', asyncHandler(async (req: any, res: any) =>
     await user.save();
 
     res.status(200).json({ message: 'Password has been reset' });
-    
+
     // Optionally send a confirmation email or generate a new login token here
 
   } catch (error) {
@@ -188,6 +199,4 @@ router.post('/reset-password/:token', asyncHandler(async (req: any, res: any) =>
   }
 }));
 
-
-
- export default router;
+export default router;
