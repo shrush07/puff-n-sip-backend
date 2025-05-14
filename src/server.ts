@@ -106,6 +106,11 @@ const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
   res.status(500).json({ message: err.message || 'Internal Server Error' });
 };
 
+app.get('/test-login-route', (req, res) => {
+  res.send("Login route check OK");
+});
+
+
 app.use(errorHandler);
 
 if (!process.env.JWT_SECRET) {
