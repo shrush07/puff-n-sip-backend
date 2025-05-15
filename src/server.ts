@@ -12,6 +12,7 @@ import path from 'path';
 import http from 'http';
 import listEndpoints from 'express-list-endpoints';
 import { WebSocketServer, WebSocket } from 'ws';
+import adminRouter from './routers/admin.router';
 
 dotenv.config();
 
@@ -52,9 +53,10 @@ const baseUrl =
     : 'http://localhost:5000';
 
 // Serve images
-const imagesPath = path.join(__dirname, 'public', 'images');
-app.use('/images', express.static(imagesPath));
-console.log(`Serving images from: ${imagesPath}`);
+const publicPath = path.join(__dirname, 'public');
+app.use('/images', express.static(path.join(publicPath)));
+console.log(`Serving images from: ${path.join(publicPath)}`);
+
 
 // Request logger
 app.use((req: Request, res: Response, next: NextFunction) => {
@@ -85,6 +87,8 @@ app.use('/api/users', userRouter);
 app.use('/api/orders', orderRouter);
 app.use('/api/cart', cartRouter);
 app.use('/api/contact', contactRouter);
+app.use('/api/admin', adminRouter);
+
 
 // Health Check
 app.get('/health', (req: Request, res: Response) => {
