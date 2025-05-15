@@ -44,10 +44,17 @@ app.use(cors(corsOptions));
 app.use(express.json());
 console.log('CORS enabled for https://puff-n-sip.netlify.app');
 
+
+// Base URL
+const baseUrl =
+  process.env.NODE_ENV === 'production'
+    ? 'https://puff-sip.onrender.com'
+    : 'http://localhost:5000';
+
 // Serve images
-const imagesPath = path.join(__dirname, 'public/images');
-console.log('Serving images from:', imagesPath);
+const imagesPath = path.join(__dirname, 'public', 'images');
 app.use('/images', express.static(imagesPath));
+console.log(`Serving images from: ${imagesPath}`);
 
 // Request logger
 app.use((req: Request, res: Response, next: NextFunction) => {
@@ -84,6 +91,7 @@ app.get('/health', (req: Request, res: Response) => {
   res.status(200).json({ status: 'OK', message: 'Server is healthy.' });
 });
 
+
 // Root
 app.get('/', (req: Request, res: Response) => {
   res.send('Server is running!');
@@ -94,6 +102,9 @@ app.use((req:any, res:any, next:any) => {
   next();
 });
 
+app.use((req: Request, res: Response) => {
+  res.status(404).json({ message: `Route not found: ${req.originalUrl}` });
+});
 
 // Protected Route
 app.post('/protected-route', authMiddleware, (req: Request, res: Response) => {
