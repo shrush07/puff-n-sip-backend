@@ -53,7 +53,7 @@ const baseUrl =
     : 'http://localhost:5000';
 
 // Serve images
-const publicPath = path.join(__dirname, 'public');
+const publicPath = path.join(__dirname, 'public', 'images');
 app.use('/images', express.static(path.join(publicPath)));
 console.log(`Serving images from: ${path.join(publicPath)}`);
 

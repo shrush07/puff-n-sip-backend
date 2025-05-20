@@ -1,4 +1,3 @@
-import { Request, Response } from 'express';
 import { OrderModel } from '../models/order.model'; 
 
 export async function fetchTopProducts(range: 'weekly' | 'monthly' | 'yearly') {
@@ -6,38 +5,34 @@ export async function fetchTopProducts(range: 'weekly' | 'monthly' | 'yearly') {
   let startDate: Date;
 
   if (range === 'weekly') {
-    startDate = new Date(now.setDate(now.getDate() - 7));
+    startDate = new Date();
+    startDate.setDate(now.getDate() - 7);
   } else if (range === 'monthly') {
-    startDate = new Date(now.setMonth(now.getMonth() - 1));
+    startDate = new Date();
+    startDate.setMonth(now.getMonth() - 1);
   } else {
-    startDate = new Date(now.setFullYear(now.getFullYear() - 1));
+    startDate = new Date();
+    startDate.setFullYear(now.getFullYear() - 1);
   }
 
-  // Sample MongoDB aggregation to get top 10 selling products
   const topProducts = await OrderModel.aggregate([
     { $match: { createdAt: { $gte: startDate } } },
-    { $unwind: '$orderItems' },
+    { $unwind: '$items' },
     {
       $group: {
-        _id: '$orderItems.productId',
-        totalSold: { $sum: '$orderItems.quantity' }
+        _id: '$items.food._id',
+        name: { $first: '$items.food.name' },
+        imageUrl: { $first: '$items.food.imageUrl' },
+        totalSold: { $sum: '$items.quantity' }
       }
     },
     { $sort: { totalSold: -1 } },
     { $limit: 10 },
     {
-      $lookup: {
-        from: 'products',
-        localField: '_id',
-        foreignField: '_id',
-        as: 'product'
-      }
-    },
-    { $unwind: '$product' },
-    {
       $project: {
         productId: '$_id',
-        name: '$product.name',
+        name: 1,
+        imageUrl: 1,
         totalSold: 1
       }
     }
