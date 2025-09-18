@@ -1,5 +1,6 @@
 export const sample_foods: any[] = [
     {
+      _id: '1',
       name: 'Coffee',
       price: 120.0,
       imageUrl: 'coffee1.gif',
@@ -8,6 +9,7 @@ export const sample_foods: any[] = [
       createdAt: '2024-08-01T10:00:00Z',
     },
     {
+      _id: '2',
       name: 'Mocktail',
       price: 120.0,
       imageUrl: 'juice1.gif',
@@ -16,6 +18,7 @@ export const sample_foods: any[] = [
       createdAt: '2024-06-01T10:00:00Z',
     },
     {
+      _id: '3',
       name: 'Puff',
       price: 120.0,
       imageUrl: 'puff1.gif',
@@ -24,6 +27,7 @@ export const sample_foods: any[] = [
       createdAt: '2024-06-07T10:00:00Z',
     },
     {
+      _id: '4',
       name: 'Croisaant',
       price: 120.0,
       imageUrl: 'croisaant1.gif',
@@ -32,6 +36,7 @@ export const sample_foods: any[] = [
       createdAt: '2024-05-01T10:00:00Z',
     },
     {
+      _id: '5',
       name: 'Coffee',
       price: 120.0,
       imageUrl: 'coffee2.gif',
@@ -40,6 +45,7 @@ export const sample_foods: any[] = [
       createdAt: '2024-05-01T10:00:00Z',
     },
     {
+      _id: '6',
       name: 'Burger',
       price: 120.0,
       imageUrl: 'burger1.gif',
@@ -48,6 +54,7 @@ export const sample_foods: any[] = [
       createdAt: '2024-05-01T10:00:00Z',
     },
     {
+      _id: '7',
       name: 'Mocktail',
       price: 120.0,
       imageUrl: 'juice2.gif',
@@ -56,14 +63,7 @@ export const sample_foods: any[] = [
       createdAt: '2024-05-01T10:00:00Z',
     },
     {
-      name: 'Coffee',
-      price: 120.0,
-      imageUrl: 'coffee3.gif',
-      tags: ['Coffee'],
-      favorite: true,
-      createdAt: '2024-05-01T10:00:00Z',
-    },
-    {
+      _id: '8',
       name: 'Croisaant',
       price: 120.0,
       imageUrl: 'croisaant2.gif',
@@ -72,14 +72,16 @@ export const sample_foods: any[] = [
       createdAt: '2024-05-01T10:00:00Z',
     },
     {
-      name: 'Puff',
+      _id: '9',
+      name: 'Coffee',
       price: 120.0,
-      imageUrl: 'puff2.gif',
-      tags: ['Puff'],
+      imageUrl: 'coffee3.gif',
+      tags: ['Coffee'],
       favorite: true,
       createdAt: '2024-05-01T10:00:00Z',
     },
     {
+      _id: '10',
       name: 'Croisaant',
       price: 120.0,
       imageUrl: 'croisaant3.gif',
@@ -88,14 +90,16 @@ export const sample_foods: any[] = [
       createdAt: '2024-05-01T10:00:00Z',
     },
     {
-      name: 'Coffee',
+      _id: '11',
+      name: 'Puff',
       price: 120.0,
-      imageUrl: 'coffee4.gif',
-      tags: ['Coffee'],
+      imageUrl: 'puff2.gif',
+      tags: ['Puff'],
       favorite: true,
       createdAt: '2024-05-01T10:00:00Z',
     },
     {
+      _id: '12',
       name: 'Croisaant',
       price: 120.0,
       imageUrl: 'croisaant4.gif',
@@ -104,6 +108,16 @@ export const sample_foods: any[] = [
       createdAt: '2024-05-01T10:00:00Z',
     },
     {
+      _id: '13',
+      name: 'Coffee',
+      price: 120.0,
+      imageUrl: 'coffee4.gif',
+      tags: ['Coffee'],
+      favorite: true,
+      createdAt: '2024-05-01T10:00:00Z',
+    },
+    {
+      _id: '14',
       name: 'Croisaant',
       price: 120.0,
       imageUrl: 'croisaant5.gif',
