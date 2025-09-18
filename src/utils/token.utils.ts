@@ -3,8 +3,9 @@ import { User } from '../models/user.model';
 
 export const generateTokenResponse = (user: User) => {
   const secretKey = process.env.JWT_SECRET || "puff_n_sip";
+
   const accessToken = jwt.sign(
-    { id: user.id, email: user.email, isAdmin: user.isAdmin, role: user.isAdmin ? 'admin' : 'user' }, // Include role
+    { id: user.id, email: user.email, isAdmin: user.isAdmin, role: user.isAdmin ? 'admin' : 'user' },
     secretKey,
     { expiresIn: '1d' }
   );
@@ -25,8 +26,8 @@ export const generateTokenResponse = (user: User) => {
     name: user.name,
     address: user.address,
     isAdmin: user.isAdmin,
-    role: user.isAdmin ? 'admin' : 'user', 
+    role: user.isAdmin ? 'admin' : 'user',
     token: accessToken,
-    refreshToken: refreshToken 
+    refreshToken: refreshToken
   };
 };

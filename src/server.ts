@@ -52,11 +52,12 @@ const baseUrl =
     ? 'https://puff-sip.onrender.com'
     : 'http://localhost:5000';
 
-// Serve images
-const publicPath = path.join(__dirname, 'public', 'images');
-app.use('/images', express.static(path.join(publicPath)));
-console.log(`Serving images from: ${path.join(publicPath)}`);
+// Determine path to static images
+const imagesPath = path.join(__dirname, 'public', 'images');
 
+// Serve /images
+app.use('/images', express.static(imagesPath));
+console.log(`Serving images from: ${imagesPath}`);
 
 // Request logger
 app.use((req: Request, res: Response, next: NextFunction) => {

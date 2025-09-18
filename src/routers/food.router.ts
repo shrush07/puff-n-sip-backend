@@ -4,17 +4,27 @@ import asyncHandler from 'express-async-handler';
 import { FoodModel } from '../models/food.model';
 const router = Router();
 
+// router.get(
+//   '/seed',
+//   asyncHandler(async (req, res) => {
+//     const foodsCount = await FoodModel.countDocuments();
+//     if (foodsCount > 0) {
+//       res.send('Seed is already done!');
+//       return;
+//     }
+
+//     await FoodModel.create(sample_foods);
+//     res.send('Seed Is Done!');
+//   })
+// );
+
+
 router.get(
   '/seed',
   asyncHandler(async (req, res) => {
-    const foodsCount = await FoodModel.countDocuments();
-    if (foodsCount > 0) {
-      res.send('Seed is already done!');
-      return;
-    }
-
-    await FoodModel.create(sample_foods);
-    res.send('Seed Is Done!');
+    await FoodModel.deleteMany({}); // clear old data
+    await FoodModel.create(sample_foods); // insert new data
+    res.send('✅ Database reseeded with fresh data!');
   })
 );
 

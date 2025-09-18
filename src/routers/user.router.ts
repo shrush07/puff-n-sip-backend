@@ -31,28 +31,41 @@ router.get("/seed", asyncHandler(
 router.post('/login', asyncHandler(async (req: any, res: any) => {
   const { email, password } = req.body;
 
+  // Find user by email
   const user = await UserModel.findOne({ email });
-
   if (!user) {
     return res.status(400).send({ message: 'User not found' });
   }
 
+  // Check password
   const isPasswordMatch = await bcrypt.compare(password, user.password);
-    if (!isPasswordMatch) {
-      return res.status(HTTP_BAD_REQUEST).send("Username or password is invalid!");
-    }
+  if (!isPasswordMatch) {
+    return res.status(HTTP_BAD_REQUEST).send({ message: "Username or password is invalid!" });
+  }
 
+  // Ensure user object has an 'id' for token generation
+  const userForToken = {
+    ...user.toObject(),
+    id: user._id.toString()
+  };
 
+  // Generate token response
+  const tokenResponse = generateTokenResponse(userForToken);
 
-  res.send({
-    id: user._id,
-    email: user.email,
-    name: user.name,
-    address: user.address,
-    isAdmin: user.isAdmin,
-    token: generateTokenResponse(user), 
+  // Send full response including token & refreshToken
+  res.status(200).send({
+    id: tokenResponse.id,
+    email: tokenResponse.email,
+    name: tokenResponse.name,
+    address: tokenResponse.address,
+    isAdmin: tokenResponse.isAdmin,
+    role: tokenResponse.role,
+    token: tokenResponse.token,
+    refreshToken: tokenResponse.refreshToken
   });
 }));
+
+
 
 // Register route
 router.post('/register', asyncHandler(
