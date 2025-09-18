@@ -2,7 +2,7 @@ export const sample_foods: any[] = [
     {
       name: 'Coffee',
       price: 120.0,
-      imageUrl: 'https://puff-sip.onrender.com/images/coffee1.gif',
+      imageUrl: 'coffee1.gif',
       tags: ['Coffee'],
       favorite: false,
       createdAt: '2024-08-01T10:00:00Z',
@@ -10,7 +10,7 @@ export const sample_foods: any[] = [
     {
       name: 'Mocktail',
       price: 120.0,
-      imageUrl: 'https://puff-sip.onrender.com/images/juice1.gif',
+      imageUrl: 'juice1.gif',
       tags: ['Mocktail'],
       favorite: false,
       createdAt: '2024-06-01T10:00:00Z',
@@ -18,7 +18,7 @@ export const sample_foods: any[] = [
     {
       name: 'Puff',
       price: 120.0,
-      imageUrl: 'https://puff-sip.onrender.com/images/puff1.gif',
+      imageUrl: 'puff1.gif',
       tags: ['Puff'],
       favorite: false,
       createdAt: '2024-06-07T10:00:00Z',
@@ -26,7 +26,7 @@ export const sample_foods: any[] = [
     {
       name: 'Croisaant',
       price: 120.0,
-      imageUrl: 'https://puff-sip.onrender.com/images/croisaant1.gif',
+      imageUrl: 'croisaant1.gif',
       tags: ['Croisaant'],
       favorite: true,
       createdAt: '2024-05-01T10:00:00Z',
@@ -34,7 +34,7 @@ export const sample_foods: any[] = [
     {
       name: 'Coffee',
       price: 120.0,
-      imageUrl: 'https://puff-sip.onrender.com/images/coffee2.gif',
+      imageUrl: 'coffee2.gif',
       tags: ['Coffee'],
       favorite: true,
       createdAt: '2024-05-01T10:00:00Z',
@@ -42,7 +42,7 @@ export const sample_foods: any[] = [
     {
       name: 'Burger',
       price: 120.0,
-      imageUrl: 'https://puff-sip.onrender.com/images/burger1.gif',
+      imageUrl: 'burger1.gif',
       tags: ['Burger'],
       favorite: true,
       createdAt: '2024-05-01T10:00:00Z',
@@ -50,7 +50,7 @@ export const sample_foods: any[] = [
     {
       name: 'Mocktail',
       price: 120.0,
-      imageUrl: 'https://puff-sip.onrender.com/images/juice2.gif',
+      imageUrl: 'juice2.gif',
       tags: ['Mocktail'],
       favorite: true,
       createdAt: '2024-05-01T10:00:00Z',
@@ -58,7 +58,7 @@ export const sample_foods: any[] = [
     {
       name: 'Coffee',
       price: 120.0,
-      imageUrl: 'https://puff-sip.onrender.com/images/coffee3.gif',
+      imageUrl: 'coffee3.gif',
       tags: ['Coffee'],
       favorite: true,
       createdAt: '2024-05-01T10:00:00Z',
@@ -66,7 +66,7 @@ export const sample_foods: any[] = [
     {
       name: 'Croisaant',
       price: 120.0,
-      imageUrl: 'https://puff-sip.onrender.com/images/croisaant2.gif',
+      imageUrl: 'croisaant2.gif',
       tags: ['Croisaant'],
       favorite: true,
       createdAt: '2024-05-01T10:00:00Z',
@@ -74,28 +74,52 @@ export const sample_foods: any[] = [
     {
       name: 'Puff',
       price: 120.0,
-      imageUrl: 'https://puff-sip.onrender.com/images/puff2.gif',
+      imageUrl: 'puff2.gif',
       tags: ['Puff'],
+      favorite: true,
+      createdAt: '2024-05-01T10:00:00Z',
+    },
+    {
+      name: 'Croisaant',
+      price: 120.0,
+      imageUrl: 'croisaant3.gif',
+      tags: ['Croisaant'],
       favorite: true,
       createdAt: '2024-05-01T10:00:00Z',
     },
     {
       name: 'Coffee',
       price: 120.0,
-      imageUrl: 'https://puff-sip.onrender.com/images/coffee4.gif',
+      imageUrl: 'coffee4.gif',
       tags: ['Coffee'],
+      favorite: true,
+      createdAt: '2024-05-01T10:00:00Z',
+    },
+    {
+      name: 'Croisaant',
+      price: 120.0,
+      imageUrl: 'croisaant4.gif',
+      tags: ['Croisaant'],
+      favorite: true,
+      createdAt: '2024-05-01T10:00:00Z',
+    },
+    {
+      name: 'Croisaant',
+      price: 120.0,
+      imageUrl: 'croisaant5.gif',
+      tags: ['Croisaant'],
       favorite: true,
       createdAt: '2024-05-01T10:00:00Z',
     },
   ];
   
   export const sample_tags: any[] = [
-    { name: 'All', count: 11 },
+    { name: 'All', count: 14 },
     { name: 'Coffee', count: 4 },
     { name: 'Mocktail', count: 2 },
     { name: 'Puff', count: 2 },
     { name: 'Burger', count: 1 },
-    { name: 'Croisaant', count: 2 },
+    { name: 'Croisaant', count: 5 },
   ];
   
   export const sample_users: any[] = [
