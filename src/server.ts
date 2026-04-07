@@ -53,7 +53,9 @@ const baseUrl =
     : 'http://localhost:5000';
 
 // Determine path to static images
+
 const imagesPath = path.join(__dirname, 'public', 'images');
+//const imagesPath = path.resolve(process.cwd(), 'src/public/images');
 
 // Serve /images
 app.use('/images', express.static(imagesPath));

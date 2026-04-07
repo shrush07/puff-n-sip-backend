@@ -212,4 +212,38 @@ router.post('/reset-password/:token', asyncHandler(async (req: any, res: any) =>
   }
 }));
 
+// Get current logged-in user profile
+router.get('/profile', authMiddleware, asyncHandler(async (req: any, res: any) => {
+  const userId = req.user.id;
+
+  const user = await UserModel.findById(userId).select('-password -resetPasswordToken -resetPasswordExpires');
+  if (!user) {
+    return res.status(404).json({ message: 'User not found' });
+  }
+
+  res.status(200).json(user);
+}));
+
+// Update current user profile
+router.put('/profile', authMiddleware, asyncHandler(async (req: any, res: any) => {
+  const userId = req.user.id;
+  const { name, email, address, phone, password } = req.body;
+
+  const user = await UserModel.findById(userId);
+  if (!user) return res.status(404).json({ message: 'User not found' });
+
+  if (name) user.name = name;
+  if (email) user.email = email.toLowerCase();
+  if (address) user.address = address;
+  if (phone) user.phone = phone; 
+
+  if (password) {
+    user.password = await bcrypt.hash(password, 10);
+  }
+
+  await user.save();
+
+  res.status(200).json(user);
+}));
+
 export default router;

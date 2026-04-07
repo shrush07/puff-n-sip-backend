@@ -142,6 +142,7 @@ export const sample_foods: any[] = [
       email: 'jhon@gmail.com',
       password: '1234',
       address: 'Toronto',
+      phone: '1234567890',
       isAdmin: true,
     },
     {
@@ -149,6 +150,7 @@ export const sample_foods: any[] = [
       email: 'jane@gmail.com',
       password: '1234',
       address: 'Sudbury',
+      phone: '1234567890',
       isAdmin: false,
     },
     {
@@ -156,6 +158,7 @@ export const sample_foods: any[] = [
       email: 'shrupatel07@gmail.com',
       password: '1234567',
       address: 'Sudbury',
+      phone: '1234567890',
       isAdmin: true,
     },
   ];

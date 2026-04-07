@@ -17,7 +17,7 @@ router.use(auth);
 
 // Initialize Stripe with your secret key
 const stripe = new Stripe(environment.stripeSecretKey, {
-  apiVersion: '2024-12-18.acacia'
+ // apiVersion: '2024-12-18.acacia'
 });
 
 if (!environment.stripeSecretKey) {
@@ -186,5 +186,27 @@ router.get('/latest', auth, asyncHandler(async (req: any, res: any) => {
   }
 }));
 
+// Get ALL orders for logged-in user
+router.get('/my-orders', asyncHandler(async (req: any, res: any) => {
+  console.log('GET /api/orders/my-orders called');
+
+  const userId = req.user?.id;
+
+  if (!userId) {
+    return res.status(401).json({ message: 'Unauthorized' });
+  }
+
+  try {
+    const orders = await OrderModel.find({ user: userId })
+      .sort({ createdAt: -1 });
+
+    console.log('User orders fetched:', orders.length);
+
+    res.status(200).json(orders);
+  } catch (error) {
+    console.error('Error fetching user orders:', error);
+    res.status(500).json({ message: 'Failed to fetch orders' });
+  }
+}));
 
 export default router;
