@@ -8,7 +8,7 @@ import mongoose from "mongoose";
 import Stripe from "stripe"; 
 import authMid from "../middlewares/auth.mid";
 import { environment } from "../environments/environment.prod";
-
+// import StripeConstructor from "stripe";
 
 console.log('Order router initialized');
 
@@ -16,8 +16,8 @@ const router = Router();
 router.use(auth);
 
 // Initialize Stripe with your secret key
-const stripe = new Stripe(environment.stripeSecretKey, {
- // apiVersion: '2024-12-18.acacia'
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+  // apiVersion: "2022-11-15",
 });
 
 if (!environment.stripeSecretKey) {
