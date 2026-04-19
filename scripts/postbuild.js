@@ -11,7 +11,7 @@ if (fs.existsSync(srcPublic)) {
 }
 
 // Copy .env
-const envSrc = path.join(__dirname, "../.env");
+// const envSrc = path.join(__dirname, "../.env");
 const envDest = path.join(__dirname, "../dist/.env");
 
 if (fs.existsSync(envSrc)) {

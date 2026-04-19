@@ -1,0 +1,36 @@
+2026-04-17T12:42:14.737Z [INFO]: CORS enabled
+2026-04-17T12:42:14.739Z [INFO]: Serving images from: C:\Users\Hard\Desktop\Srushti_project\puff-sip\backend\src\public\images
+2026-04-17T12:42:14.740Z [INFO]: Server initializing...
+2026-04-17T12:42:14.744Z [INFO]: Backend running at http://localhost:5000
+2026-04-17T12:42:14.746Z [INFO]: Registered Endpoints:
+2026-04-17T12:42:14.747Z [INFO]: GET /api/foods/seed
+2026-04-17T12:42:14.747Z [INFO]: GET /api/foods
+2026-04-17T12:42:14.747Z [INFO]: GET /api/foods/search/:searchTerm
+2026-04-17T12:42:14.748Z [INFO]: GET /api/foods/tags
+2026-04-17T12:42:14.748Z [INFO]: GET /api/foods/tag/:tagName
+2026-04-17T12:42:14.748Z [INFO]: GET /api/foods/:foodId
+2026-04-17T12:42:14.749Z [INFO]: PATCH /api/foods/:id/favorite
+2026-04-17T12:42:14.749Z [INFO]: GET /api/users/seed
+2026-04-17T12:42:14.749Z [INFO]: POST /api/users/login
+2026-04-17T12:42:14.750Z [INFO]: POST /api/users/register
+2026-04-17T12:42:14.750Z [INFO]: GET /api/users
+2026-04-17T12:42:14.750Z [INFO]: POST /api/users/reset-password
+2026-04-17T12:42:14.750Z [INFO]: POST /api/users/reset-password/:token
+2026-04-17T12:42:14.751Z [INFO]: GET, PUT /api/users/profile
+2026-04-17T12:42:14.751Z [INFO]: POST /api/orders/create
+2026-04-17T12:42:14.751Z [INFO]: GET /api/orders/newOrderForCurrentUser
+2026-04-17T12:42:14.751Z [INFO]: GET /api/orders/order/:orderId
+2026-04-17T12:42:14.752Z [INFO]: POST /api/orders/payment/create-payment-intent
+2026-04-17T12:42:14.752Z [INFO]: POST /api/orders/payment/success
+2026-04-17T12:42:14.752Z [INFO]: GET /api/orders/latest
+2026-04-17T12:42:14.752Z [INFO]: GET /api/orders/my-orders
+2026-04-17T12:42:14.752Z [INFO]: GET, DELETE /api/cart
+2026-04-17T12:42:14.753Z [INFO]: POST /api/cart/add
+2026-04-17T12:42:14.753Z [INFO]: DELETE /api/cart/items/:itemId
+2026-04-17T12:42:14.753Z [INFO]: PUT /api/cart/:userId/items/:itemId
+2026-04-17T12:42:14.753Z [INFO]: POST /api/contact
+2026-04-17T12:42:14.753Z [INFO]: GET /api/admin/overview
+2026-04-17T12:42:14.753Z [INFO]: GET /api/admin/top-products
+2026-04-17T12:42:14.754Z [INFO]: GET /health
+2026-04-17T12:42:14.754Z [INFO]: GET /
+2026-04-17T12:42:14.754Z [INFO]: POST /protected-route
