@@ -1,5 +1,11 @@
-node_modules
+node_modules/
+
 .env
+.env.*
+!.env.example
+
+dist/
+logs/
 
 /environments/environment.prod.ts
 /environments/environment.ts

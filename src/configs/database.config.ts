@@ -10,7 +10,6 @@ dotenv.config();
 // Connect to MongoDB
 export const dbConnect = async (): Promise<void> => {
   const MONGO_URI = process.env.MONGO_URI;
-  console.log('Loaded Environment Variables:', process.env);
 
   if (!MONGO_URI) {
     console.error('Error: MONGO_URI is missing in the environment variables.');

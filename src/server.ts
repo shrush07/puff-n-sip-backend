@@ -38,9 +38,11 @@ dbConnect().catch((err) => {
 // CORS setup
 //
 const allowedOrigins = [
+  process.env.CLIENT_URL,
   'https://puff-n-sip.netlify.app',
-  'http://localhost:4200'
-];
+  'http://localhost:4200',
+  'http://localhost:8080',
+].filter(Boolean);
 
 const corsOptions: CorsOptions = {
   origin: function (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) {
@@ -58,15 +60,31 @@ const corsOptions: CorsOptions = {
 //
 // Security Middlewares
 //
-app.use(helmet());
-
 app.use(
-  rateLimit({
-    windowMs: 15 * 60 * 1000,
-    max: 100,
-    message: 'Too many requests, please try again later.'
+  helmet({
+    crossOriginResourcePolicy: {
+      policy: 'cross-origin',
+    },
   })
 );
+
+// Configure trusted proxy (one hop: Kubernetes Ingress/load balancer)
+app.set('trust proxy', 1);
+
+// Configurable rate limiter
+const limiter = rateLimit({
+  windowMs: Number(process.env.RATE_LIMIT_WINDOW_MS) || 15 * 60 * 1000,
+  max: Number(process.env.RATE_LIMIT_MAX) || 100,
+  standardHeaders: true,
+  legacyHeaders: false,
+  skip: (req) =>
+    process.env.DISABLE_RATE_LIMIT === 'true' ||
+    (Boolean(process.env.LOAD_TEST_TOKEN) &&
+      req.headers['x-load-test-token'] === process.env.LOAD_TEST_TOKEN),
+  message: 'Too many requests, please try again later.',
+});
+
+app.use(limiter);
 
 app.use(cors(corsOptions));
 app.use(express.json());
