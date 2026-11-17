@@ -1,18 +1,22 @@
+
 FROM node:18-alpine
 
 WORKDIR /app
 
-COPY package*.json ./
-RUN npm install
+# Copy backend package files
+COPY backend/package*.json ./
 
-COPY . .
+RUN npm ci
+
+# Copy backend source code
+COPY backend/ ./
 
 # Build TypeScript
 RUN npm run build
 
-# Confirm dist exists (debug safety)
+# Confirm dist exists
 RUN ls -la dist
 
-EXPOSE 3000
+EXPOSE 3000 5000
 
 CMD ["node", "dist/server.js"]
