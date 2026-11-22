@@ -24,6 +24,7 @@ import logger from './utils/logger';
 dotenv.config();
 
 const app = express();
+app.set('trust proxy', 1);
 const port = process.env.PORT || 5000;
 const httpServer = http.createServer(app);
 
@@ -38,10 +39,9 @@ dbConnect().catch((err) => {
 // CORS setup
 //
 const allowedOrigins = [
-  process.env.CLIENT_URL,
-  'https://puff-n-sip.netlify.app',
-  'http://localhost:4200',
-  'http://localhost:8080',
+  process.env.CLIENT_URL || '',
+  'http://localhost:4200','http://localhost:8080',
+  'puff-sip.onrender.com'
 ].filter(Boolean);
 
 const corsOptions: CorsOptions = {
@@ -68,9 +68,6 @@ app.use(
   })
 );
 
-// Configure trusted proxy (one hop: Kubernetes Ingress/load balancer)
-app.set('trust proxy', 1);
-
 // Configurable rate limiter
 const limiter = rateLimit({
   windowMs: Number(process.env.RATE_LIMIT_WINDOW_MS) || 15 * 60 * 1000,
@@ -94,7 +91,7 @@ logger.info('CORS enabled');
 //
 // Static files (images)
 //
-const imagesPath = path.join(__dirname, 'public', 'images');
+const imagesPath = path.join(process.cwd(), 'public', 'images');
 app.use('/images', express.static(imagesPath));
 logger.info(`Serving images from: ${imagesPath}`);
 
