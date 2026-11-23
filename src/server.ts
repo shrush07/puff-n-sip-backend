@@ -91,7 +91,7 @@ logger.info('CORS enabled');
 //
 // Static files (images)
 //
-const imagesPath = path.join(process.cwd(), 'public', 'images');
+const imagesPath = path.join(__dirname, 'public', 'images');
 app.use('/images', express.static(imagesPath));
 logger.info(`Serving images from: ${imagesPath}`);
 
